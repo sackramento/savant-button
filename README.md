@@ -12,6 +12,7 @@ This browser extension adds a small 📊 button next to player names on fantasy 
 ---
 
 ## 🔍 Screenshot
+![Screenshot 2025-06-03 233655](https://github.com/user-attachments/assets/a285a7b3-fef2-4531-bbb2-4534500dc58e)
 
 
 ---
