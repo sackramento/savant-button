@@ -27,8 +27,6 @@ This browser extension adds a small 📊 button next to player names on fantasy 
 The extension should now be active. Visit your fantasy site and look for the 📊 buttons next to player names!
 
 
+🚀 Join our [Discord](https://discord.gg/QaRnaEM3) server for discussions and support.
 
-
-📬 Feedback or Issues?
-Feel free to open an issue or submit a pull request!
 
