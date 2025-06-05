@@ -3,9 +3,9 @@
 This browser extension adds a small 📊 button next to player names on fantasy baseball sites to open the player's Baseball Savant page in a floating preview. 
 
 ### ✅ Supported Sites
-- ESPN Fantasy Baseball
-- CBS Sports Fantasy
-- Yahoo Fantasy Baseball
+- ESPN
+- CBS 
+- Yahoo
 - NFBC
 - Underdog Fantasy
 
@@ -33,7 +33,7 @@ The extension should now be active. Visit your fantasy site and look for the �
 - In the file picker, select any file in your extension folder, for example:
 -- manifest.json
 
-The extension should now load temporarily. You’ll see it in your toolbar, and it will work on supported sites.
+The extension should load temporarily. You’ll see it in your toolbar, and it will work on supported sites.
 
 
 🚀 Join our [Discord](https://discord.gg/QaRnaEM3) server for discussions and support.
