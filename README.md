@@ -28,14 +28,10 @@ Ottoneu and Fantrax will be added later
 
 The extension should now be active. Visit your fantasy site and look for the 📊 buttons next to player names!
 
-## 🦊 Firefox Installation Instructions
-- Open Firefox and go to about:debugging in the address bar.
-- Click “This Firefox” (or "This Nightly" if you're using Firefox Nightly).
-- Click “Load Temporary Add-on…”.
-- In the file picker, select any file in your extension folder, for example:
--- manifest.json
-
-The extension should load temporarily. You’ll see it in your toolbar, and it will work on supported sites.
+## 🦊 Installation Guide for Firefox
+- Go to the addon page [here](https://addons.mozilla.org/en-US/firefox/addon/baseball-savant-button/).
+- Click on "Add to Firefox"
+- A confirmation page will appear asking if you want to install the extension.
 
 
 🚀 Join our [Discord](https://discord.gg/QaRnaEM3) server for discussions and support.
