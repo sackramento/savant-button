@@ -25,7 +25,7 @@ Fantrax and Underdog have partial compatibility as of now.
 - Enable Developer Mode (toggle in the top right corner).
 - Click "Load unpacked" and select the folder where you cloned or unzipped the extension.
 
-The extension should now be active. Visit your fantasy site and look for the 📊 buttons next to player names!
+The extension should now be active. Look for the 📊 buttons next to player names.
 
 ## 🦊 Installation Guide for Firefox
 - Go to the addon page [here](https://addons.mozilla.org/en-US/firefox/addon/baseball-savant-button/).
