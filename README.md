@@ -9,7 +9,7 @@ This browser extension adds a small 📊 button next to player names on fantasy 
 - NFBC
 - Ottoneu
 
-Fantrax and Underdog have partial compatibility.
+Fantrax and Underdog have partial compatibility as of now.
 
 ---
 
