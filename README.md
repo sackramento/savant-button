@@ -34,6 +34,6 @@ The extension should now be active. Look for the 📊 buttons next to player nam
 - A confirmation page will appear asking if you want to install the extension.
 
 
-🚀 Join our [Discord](https://discord.gg/QaRnaEM3) server for discussions and support.
+🚀 Join our [Discord](https://discord.gg/jbrhR2rS) server for discussions and support.
 
 
