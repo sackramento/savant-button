@@ -14,7 +14,8 @@ Fantrax and Underdog have partial compatibility as of now.
 ---
 
 ## 🔍 Screenshot
-![Screenshot 2025-06-03 195712](https://github.com/user-attachments/assets/174b5157-a2b5-4ff8-ba3c-a33ab316f4c8) ![Screenshot 2025-06-03 233655](https://github.com/user-attachments/assets/6e44dcb1-1aa0-4f26-9599-e9eef61ff05a)
+![Screenshot 2025-06-03 195712](https://github.com/user-attachments/assets/174b5157-a2b5-4ff8-ba3c-a33ab316f4c8) ![Screenshot 2025-06-03 233655 (1)](https://github.com/user-attachments/assets/85c387f1-c5eb-4f7f-ba75-cd317470d039)
+
 ---
 
 
