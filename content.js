@@ -3605,29 +3605,6 @@ const savantLinks = {
 }
 
 
- function getSiteKey() {
-  const hostname = location.hostname;
-  if (hostname.includes('espn.com')) return 'espn';
-  if (hostname.includes('yahoo.com')) return 'yahoo';
-  if (hostname.includes('cbssports.com')) return 'cbs';
-  if (hostname.includes('underdogfantasy.com')) return 'underdog';
-  if (hostname.includes('nfc.shgn.com')) return 'nfbc';
-  if (hostname.includes('fantrax.com')) return 'fantrax';
-  return null;
-}
-const siteKey = getSiteKey();
-
-if (siteKey) {
-  chrome.storage.sync.get(siteKey, (result) => {
-    if (result[siteKey] !== false) {
-      // Run your normal button injection here
-      scanForPlayers();
-      observer.observe(document.body, { childList: true, subtree: true });
-    }
-  });
-}
-
-
 // Normalize the hostname by removing a leading "www." if present.
 const normalizedHost = location.hostname.replace(/^www\./, '');
 console.log("Content script running on normalized host:", normalizedHost);

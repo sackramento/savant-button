@@ -1,0 +1,49 @@
+.site-toggle {
+  display: flex;
+  flex-direction: column; /* Label on top, bar underneath */
+  margin-bottom: 12px;
+}
+
+.site-toggle label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.color-bar {
+  width: 100%;
+  height: 12px;       /* Increased thickness */
+  margin-top: 4px;    /* Space between label and bar */
+  border-radius: 3px;
+}
+
+/* Define colored bars for each site */
+.color-bar.espn {
+  background-color: #d32f2f; /* red */
+}
+
+.color-bar.yahoo {
+  background-color: #6a1b9a; /* purple */
+}
+
+.color-bar.cbs {
+  background-color: #1565c0; /* blue */
+}
+
+.color-bar.underdog {
+  background-color: #fbc02d; /* yellow */
+}
+
+.color-bar.nfbc {
+  background-color: #66D17F; /* teal */
+}
+
+.color-bar.ottoneu {
+  background-color: #5C9E77; /* green */
+}
+
+.color-bar.fantrax {
+  background-color: #1e88e5; /* blue */
+}
