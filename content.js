@@ -1,4 +1,13 @@
+(() => {
+  if (window.hasRunSavantScript) {
+    console.log("Savant script already running, skipping duplicate.");
+    return;
+  }
+  window.hasRunSavantScript = true;
+
 const savantLinks = {
+  "Jack Perkins": "https://baseballsavant.mlb.com/savant-player/jack-perkins-678022",
+  "Chase Lee": "https://baseballsavant.mlb.com/savant-player/chase-lee-695445",
   "Isaac Collins": "https://baseballsavant.mlb.com/savant-player/isaac-collins-686555",
   "Alejandro Osuna": "https://baseballsavant.mlb.com/savant-player/alejandro-osuna-696030",
   "Gage Jump": "https://baseballsavant.mlb.com/savant-player/gage-jump-695611",
@@ -3602,205 +3611,177 @@ const savantLinks = {
   "AJ Blubaugh": "https://baseballsavant.mlb.com/savant-player/aj-blubaugh-805123",
   "Zach Agnos": "https://baseballsavant.mlb.com/savant-player/zach-agnos-688642",
   "Rhylan Thomas": "https://baseballsavant.mlb.com/savant-player/rhylan-thomas-689041"
-}
+};
 
 
-// Normalize the hostname by removing a leading "www." if present.
-const normalizedHost = location.hostname.replace(/^www\./, '');
-console.log("Content script running on normalized host:", normalizedHost);
 
-chrome.storage.sync.get(normalizedHost, function(result) {
-  const setting = result[normalizedHost];
-  // Default to enabled (true) if no stored setting exists.
-  const isEnabled = (setting === undefined) ? true : setting;
-  console.log("Stored setting for", normalizedHost, ":", isEnabled);
-  
-  // If disabled, do not inject any UI.
-  if (!isEnabled) {
-    console.log("Extension disabled on", normalizedHost);
-    return;
-  }
+  // Normalize the hostname by removing a leading "www." if present.
+  const normalizedHost = location.hostname.replace(/^www\./, '');
+  console.log("Content script running on normalized host:", normalizedHost);
 
-  const processedNames = new Set();
-  let previewOpen = false;
-  let observer;
-  
-  // Displays the Baseball Savant iframe preview.
-  function showPreview(url) {
-    let iframe = document.getElementById('savant-preview');
-    if (!iframe) {
-      iframe = document.createElement('iframe');
-      iframe.id = 'savant-preview';
-      iframe.style.position = 'fixed';
-      iframe.style.right = '20px';
-      iframe.style.top = '20px';
-      iframe.style.width = '400px';
-      iframe.style.height = '500px';
-      iframe.style.zIndex = '9999';
-      iframe.style.border = '2px solid #444';
-      iframe.style.background = '#fff';
-      iframe.addEventListener('click', (e) => e.stopPropagation());
-      document.body.appendChild(iframe);
+  chrome.storage.sync.get(normalizedHost, function(result) {
+    const setting = result[normalizedHost];
+    const isEnabled = (setting === undefined) ? true : setting;
+    console.log("Running on:", normalizedHost);
+
+    if (!isEnabled) {
+      console.log("Extension disabled on", normalizedHost);
+      return;
     }
-    iframe.src = url;
-    iframe.style.display = 'block';
-    previewOpen = true;
-  }
-  
-  // Hides the preview iframe.
-  function hidePreview() {
-    const iframe = document.getElementById('savant-preview');
-    if (iframe) {
-      iframe.style.display = 'none';
-      previewOpen = false;
-    }
-  }
-  
-  // Close the preview if clicking anywhere.
-  document.body.addEventListener('click', () => {
-    if (previewOpen) hidePreview();
-  });
-  
-  // Scans the DOM for player elements and adds a 📊 button.
-function scanForPlayers() {
-  const isOttoneu = normalizedHost.includes('ottoneu.fangraphs.com');
-  const isUnderdog = normalizedHost.includes('underdogfantasy.com');
-  
-  // Cleanup:
-  if (!isOttoneu && !isUnderdog) {
-    // For non-Ottoneu/Underdog pages: disconnect observer, remove all buttons, and clear processedNames.
-    if (observer) observer.disconnect();
-    document.querySelectorAll('.savant-btn').forEach(btn => btn.remove());
-    processedNames.clear();
-  }
-  // For Ottoneu and Underdog, we intentionally do not remove existing buttons so that they persist.
-  
-  let elements;
-  if (isOttoneu) {
-    // For Ottoneu, use a targeted selector.
-    // Old version (only matches /playercard/)
-    elements = document.querySelectorAll('a[href^="/playercard/"]');
 
-    // New version (matches either /playercard/ OR any link that includes /players/)
-    elements = document.querySelectorAll('a[href^="/playercard/"], a[href*="/players/"]');
+    const processedNames = new Set();
+    let previewOpen = false;
+    let observer;
 
-    console.log("Ottoneu mode: Found", elements.length, "player elements");
-  } else {
-    // For other sites, use your original broad selector.
-    elements = document.querySelectorAll(
-      'a.PlayerName, span.PlayerName, td.PlayerName, a, span, td'
-    );
-    console.log("General mode: Found", elements.length, "elements");
-  }
-  
-  elements.forEach(el => {
-    const name = (el.innerText || el.textContent)?.trim();
-    if (!name || !savantLinks[name]) return;
-    
-    if (isOttoneu) {
-      // Skip if a button is already right after this element.
-      if (el.nextElementSibling && el.nextElementSibling.classList.contains('savant-btn')) return;
-      // Also, do not add a button if this cell is in the "Opposing Pitchers" column.
-      const td = el.closest('td');
-      if (td) {
-        const row = td.parentElement;
-        const cells = Array.from(row.children);
-        const cellIndex = cells.indexOf(td);
-        const table = td.closest('table');
-        if (table) {
-          const headerRow = table.querySelector('thead tr');
-          if (headerRow && headerRow.children[cellIndex]) {
-            const headerText = headerRow.children[cellIndex].innerText;
-            if (headerText && headerText.toLowerCase().includes("opposing")) return;
-          }
-        }
+    function showPreview(url) {
+      let iframe = document.getElementById('savant-preview');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'savant-preview';
+        iframe.style.position = 'fixed';
+        iframe.style.right = '20px';
+        iframe.style.top = '20px';
+        iframe.style.width = '400px';
+        iframe.style.height = '600px';
+        iframe.style.zIndex = '9999';
+        iframe.style.border = '2px solid #444';
+        iframe.style.background = '#fff';
+        iframe.addEventListener('click', (e) => e.stopPropagation());
+        document.body.appendChild(iframe);
       }
-      // Do not use processedNames for Ottoneu—instead, the adjacent button check suffices.
-    } else if (isUnderdog) {
-      // For Underdog, check if the element already contains a button.
-      if (el.querySelector('.savant-btn')) return;
-      if (processedNames.has(name)) return;
-      processedNames.add(name);
-    } else {
-      if (processedNames.has(name)) return;
-      processedNames.add(name);
+      iframe.src = url;
+      iframe.style.display = 'block';
+      previewOpen = true;
     }
-    
-    console.log(`Adding button for "${name}" with URL: ${savantLinks[name]}`);
-    const btn = document.createElement('button');
-    btn.className = 'savant-btn';
-    btn.textContent = '📊';
-    btn.title = `View ${name} on Baseball Savant`;
-    btn.style.marginLeft = '4px';
-    btn.style.cursor = 'pointer';
-    btn.style.display = 'inline-block';
-    
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
+
+    function hidePreview() {
       const iframe = document.getElementById('savant-preview');
-      if (iframe && iframe.style.display === 'block' && iframe.src === savantLinks[name]) {
-        hidePreview();
-      } else {
-        showPreview(savantLinks[name]);
+      if (iframe) {
+        iframe.style.display = 'none';
+        previewOpen = false;
       }
+    }
+
+    document.body.addEventListener('click', () => {
+      if (previewOpen) hidePreview();
     });
-    
-    const td = el.closest('td');
-    if (normalizedHost.includes('sports.yahoo.com')) {
-      if (td && !td.querySelector('.savant-btn')) {
-        if (el.tagName.toLowerCase() === 'td') {
-          let span;
-          if (td.firstElementChild && td.firstElementChild.tagName.toLowerCase() === 'span') {
-            span = td.firstElementChild;
-          } else {
-            span = document.createElement('span');
-            while (td.firstChild) {
-              span.appendChild(td.firstChild);
+
+    function scanForPlayers() {
+      const isOttoneu = normalizedHost.includes('ottoneu.fangraphs.com');
+      const isUnderdog = normalizedHost.includes('underdogfantasy.com');
+
+      if (!isOttoneu && !isUnderdog) {
+        if (observer) observer.disconnect();
+        document.querySelectorAll('.savant-btn').forEach(btn => btn.remove());
+        processedNames.clear();
+      }
+
+      let elements;
+      if (isOttoneu) {
+        elements = document.querySelectorAll('a[href^="/playercard/"], a[href*="/players/"]');
+        console.log("Ottoneu mode: Found", elements.length, "player elements");
+      } else {
+        elements = document.querySelectorAll(
+          'a.PlayerName, span.PlayerName, td.PlayerName, a, span, td'
+        );
+        console.log("General mode: Found", elements.length, "elements");
+      }
+
+      elements.forEach(el => {
+        const name = (el.innerText || el.textContent)?.trim();
+        if (!name || !savantLinks[name]) return;
+
+        if (isOttoneu) {
+          if (el.nextElementSibling && el.nextElementSibling.classList.contains('savant-btn')) return;
+          const td = el.closest('td');
+          if (td) {
+            const row = td.parentElement;
+            const cells = Array.from(row.children);
+            const cellIndex = cells.indexOf(td);
+            const table = td.closest('table');
+            if (table) {
+              const headerRow = table.querySelector('thead tr');
+              if (headerRow && headerRow.children[cellIndex]) {
+                const headerText = headerRow.children[cellIndex].innerText;
+                if (headerText && headerText.toLowerCase().includes("opposing")) return;
+              }
             }
-            td.appendChild(span);
           }
-          span.insertAdjacentElement('afterend', btn);
+        } else if (isUnderdog) {
+          if (el.querySelector('.savant-btn')) return;
+          if (processedNames.has(name)) return;
+          processedNames.add(name);
+        } else {
+          if (processedNames.has(name)) return;
+          processedNames.add(name);
+        }
+
+        console.log(`Adding button for "${name}" with URL: ${savantLinks[name]}`);
+        const btn = document.createElement('button');
+        btn.className = 'savant-btn';
+        btn.textContent = '📊';
+        btn.title = `View ${name} on Baseball Savant`;
+        btn.style.marginLeft = '4px';
+        btn.style.cursor = 'pointer';
+        btn.style.display = 'inline-block';
+
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const iframe = document.getElementById('savant-preview');
+          if (iframe && iframe.style.display === 'block' && iframe.src === savantLinks[name]) {
+            hidePreview();
+          } else {
+            showPreview(savantLinks[name]);
+          }
+        });
+
+        const td = el.closest('td');
+        if (normalizedHost.includes('sports.yahoo.com')) {
+          if (td && !td.querySelector('.savant-btn')) {
+            if (el.tagName.toLowerCase() === 'td') {
+              let span;
+              if (td.firstElementChild && td.firstElementChild.tagName.toLowerCase() === 'span') {
+                span = td.firstElementChild;
+              } else {
+                span = document.createElement('span');
+                while (td.firstChild) {
+                  span.appendChild(td.firstChild);
+                }
+                td.appendChild(span);
+              }
+              span.insertAdjacentElement('afterend', btn);
+            } else {
+              el.insertAdjacentElement('afterend', btn);
+            }
+          }
+        } else if (normalizedHost.includes('nfc.shgn.com') || normalizedHost.includes('cbssports.com')) {
+          if (td && !td.querySelector('.savant-btn')) {
+            td.appendChild(btn);
+          }
+        } else if (isUnderdog) {
+          el.insertAdjacentElement('beforeend', btn);
+        } else if (isOttoneu) {
+          el.insertAdjacentElement('afterend', btn);
         } else {
           el.insertAdjacentElement('afterend', btn);
         }
+      });
+
+      if (!isOttoneu && !isUnderdog) {
+        observer = new MutationObserver(() => {
+          scanForPlayers();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
       }
-    } else if (normalizedHost.includes('nfc.shgn.com') || normalizedHost.includes('cbssports.com')) {
-      if (td && !td.querySelector('.savant-btn')) {
-        td.appendChild(btn);
-      }
-    } else if (normalizedHost.includes('underdogfantasy.com')) {
-      // For Underdog, insert the button inside the element to keep it inline.
-      el.insertAdjacentElement('beforeend', btn);
-    } else if (isOttoneu) {
-      // For Ottoneu, insert the button immediately after the link.
-      el.insertAdjacentElement('afterend', btn);
-    } else {
-      el.insertAdjacentElement('afterend', btn);
     }
-  });
-  
-  // For non-Ottoneu/Underdog pages, attach the MutationObserver for dynamic updates.
-  if (!isOttoneu && !isUnderdog) {
-    observer = new MutationObserver(() => {
+
+    if (normalizedHost.includes('ottoneu.fangraphs.com')) {
       scanForPlayers();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-}
+      setInterval(scanForPlayers, 1000);
+    } else {
+      scanForPlayers();
+    }
 
-
-// --- Initialization ---
-// For Ottoneu, run the scan every second;
-// for other sites, run the scan normally.
-if (normalizedHost.includes('ottoneu.fangraphs.com')) {
-  scanForPlayers(); // initial scan
-  setInterval(scanForPlayers, 1000);
-} else {
-  scanForPlayers();
-}
-
-
-  // Initialize the extension UI.
-scanForPlayers();
-});
-  
+    scanForPlayers(); // initial call for all
+  });
+})();
