@@ -26,6 +26,8 @@ Fantrax and Underdog have partial compatibility as of now.
 - Enable Developer Mode (toggle in the top right corner).
 - Click "Load unpacked" and select the folder where you cloned or unzipped the extension.
 
+For Edge users, [here](https://microsoftedge.microsoft.com/addons/detail/baseball-savant-button/ccgafliooikiccijabcioinhlcelnpeb) is a direct link to the extension.
+
 The extension should now be active. Look for the 📊 buttons next to player names.
 
 ## 🦊 Installation Guide for Firefox
