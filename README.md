@@ -28,8 +28,6 @@ Fantrax and Underdog have partial compatibility as of now.
 
 For Edge users, [here](https://microsoftedge.microsoft.com/addons/detail/baseball-savant-button/ccgafliooikiccijabcioinhlcelnpeb) is a direct link to the extension.
 
-The extension should now be active. Look for the 📊 buttons next to player names.
-
 ## 🦊 Installation Guide for Firefox
 - Go to the addon page [here](https://addons.mozilla.org/en-US/firefox/addon/baseball-savant-button/).
 - Click on "Add to Firefox"
